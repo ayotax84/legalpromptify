@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, Shield, FileText, Users, Database } from "lucide-react";
 
 const PricingSection: React.FC = () => {
   const plans = [
@@ -9,6 +9,7 @@ const PricingSection: React.FC = () => {
       name: "Basic",
       price: "Free",
       description: "Perfect for occasional document needs",
+      icon: <FileText className="h-8 w-8 text-legal-primary mb-4" />,
       features: [
         { name: "5 Basic Document Templates", included: true },
         { name: "Standard Clauses", included: true },
@@ -27,6 +28,7 @@ const PricingSection: React.FC = () => {
       price: "$9.99",
       period: "per month",
       description: "For individuals with ongoing legal needs",
+      icon: <Shield className="h-8 w-8 text-legal-primary mb-4" />,
       features: [
         { name: "All Basic Templates + Premium", included: true },
         { name: "Advanced Clauses", included: true },
@@ -45,6 +47,7 @@ const PricingSection: React.FC = () => {
       price: "$29.99",
       period: "per month",
       description: "For businesses with complex requirements",
+      icon: <Users className="h-8 w-8 text-legal-primary mb-4" />,
       features: [
         { name: "All Professional Features", included: true },
         { name: "Unlimited Templates", included: true },
@@ -61,9 +64,10 @@ const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-white dark:bg-legal-dark" id="pricing">
+    <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-legal-dark dark:to-gray-900" id="pricing">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
+          <span className="text-legal-primary font-medium text-sm uppercase tracking-wider mb-2 block">Pricing</span>
           <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-4">
             Simple, Transparent Pricing
           </h2>
@@ -72,22 +76,29 @@ const PricingSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className={`legal-card p-6 ${plan.highlighted ? 'border-legal-primary dark:border-legal-accent border-2' : ''}`}
+              className={`legal-card p-8 relative transition-all duration-300 hover:shadow-xl ${
+                plan.highlighted 
+                  ? 'border-legal-primary dark:border-legal-accent border-2 transform hover:-translate-y-1' 
+                  : 'transform hover:-translate-y-1'
+              }`}
             >
               {plan.highlighted && (
-                <div className="legal-gradient text-white text-xs font-medium py-1 px-3 rounded-full w-fit mx-auto -mt-10 mb-6">
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 legal-gradient text-white text-xs font-medium py-1 px-3 rounded-full w-fit">
                   Most Popular
                 </div>
               )}
-              <h3 className="font-serif font-medium text-2xl text-center mb-2">{plan.name}</h3>
-              <div className="text-center mb-6">
-                <span className="text-4xl font-bold">{plan.price}</span>
-                {plan.period && <span className="text-legal-secondary dark:text-legal-light/70 text-sm"> {plan.period}</span>}
-                <p className="text-legal-secondary dark:text-legal-light/70 mt-2">{plan.description}</p>
+              <div className="text-center">
+                {plan.icon}
+                <h3 className="font-serif font-medium text-2xl mb-2">{plan.name}</h3>
+                <div className="mb-6">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="text-legal-secondary dark:text-legal-light/70 text-sm"> {plan.period}</span>}
+                  <p className="text-legal-secondary dark:text-legal-light/70 mt-2">{plan.description}</p>
+                </div>
               </div>
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, featureIndex) => (
@@ -104,10 +115,10 @@ const PricingSection: React.FC = () => {
                 ))}
               </ul>
               <Button 
-                className={plan.highlighted 
-                  ? "w-full bg-legal-primary hover:bg-legal-primary/90 text-white" 
-                  : "w-full bg-white text-legal-primary border border-legal-primary hover:bg-legal-primary/10 dark:bg-transparent dark:text-legal-light dark:border-legal-light/30"
-                }
+                className={`w-full py-6 ${plan.highlighted 
+                  ? "bg-legal-primary hover:bg-legal-primary/90 text-white" 
+                  : "bg-white text-legal-primary border border-legal-primary hover:bg-legal-primary/10 dark:bg-transparent dark:text-legal-light dark:border-legal-light/30"
+                }`}
               >
                 {plan.buttonText}
               </Button>
