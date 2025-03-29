@@ -135,41 +135,6 @@ const About: React.FC = () => {
           </div>
         </section>
 
-        {/* Team Section */}
-        <section className="py-16 bg-white dark:bg-legal-dark">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="font-serif text-3xl font-semibold mb-4">
-                Meet Our Team
-              </h2>
-              <p className="text-legal-secondary dark:text-legal-light/70">
-                The experts behind LegalPromptify
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {teamMembers.map((member, index) => (
-                <Card key={index} className="overflow-hidden">
-                  <div className="aspect-w-1 aspect-h-1">
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="font-serif text-xl font-medium mb-1">{member.name}</h3>
-                    <p className="text-legal-primary font-medium text-sm mb-3">{member.role}</p>
-                    <p className="text-legal-secondary dark:text-legal-light/70 text-sm">
-                      {member.bio}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Awards Section */}
         <section className="py-16 bg-legal-light/30 dark:bg-gray-900">
           <div className="container mx-auto px-4">
