@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -56,7 +55,7 @@ const About: React.FC = () => {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section className="py-16 bg-legal-light/30 dark:bg-gray-900">
+        <section className="py-16 bg-gradient-to-br from-legal-primary/10 to-legal-primary/5 dark:bg-legal-dark/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
@@ -66,7 +65,7 @@ const About: React.FC = () => {
                 We're making legal protection accessible to everyone through technology.
               </p>
               <div className="flex justify-center">
-                <Shield className="h-24 w-24 text-legal-primary/20" />
+                <Shield className="h-24 w-24 text-legal-primary/30 dark:text-legal-primary/20" />
               </div>
             </div>
           </div>
