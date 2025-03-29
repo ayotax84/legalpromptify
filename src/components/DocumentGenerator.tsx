@@ -2,12 +2,43 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { FileText, ArrowRight } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { 
+  Select,
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import TrustBadge from "./TrustBadge";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Define form schema using Zod
+const formSchema = z.object({
+  documentType: z.string().min(1, "Please select a document type"),
+  jurisdiction: z.string().min(1, "Please select a jurisdiction")
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const DocumentGenerator: React.FC = () => {
+  // Initialize the form with react-hook-form
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      documentType: "nda",
+      jurisdiction: "us-california"
+    }
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log("Form submitted:", data);
+    // Handle form submission logic here
+  };
+
   return (
     <section className="py-16 bg-white dark:bg-legal-dark">
       <div className="container mx-auto px-4">
@@ -79,53 +110,67 @@ const DocumentGenerator: React.FC = () => {
                     <TrustBadge type="ai" />
                   </div>
                   
-                  <Form>
-                    <div className="space-y-4">
-                      <FormField name="documentType">
-                        <FormItem>
-                          <FormLabel>Document Type</FormLabel>
-                          <FormControl>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger className="w-full text-left border rounded-md px-4 py-2 bg-white dark:bg-gray-800">
-                                Non-Disclosure Agreement (NDA)
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>Non-Disclosure Agreement (NDA)</DropdownMenuItem>
-                                <DropdownMenuItem>Employment Contract</DropdownMenuItem>
-                                <DropdownMenuItem>Service Agreement</DropdownMenuItem>
-                                <DropdownMenuItem>Privacy Policy</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </FormControl>
-                        </FormItem>
-                      </FormField>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="documentType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Document Type</FormLabel>
+                            <FormControl>
+                              <Select 
+                                onValueChange={field.onChange} 
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select a document type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="nda">Non-Disclosure Agreement (NDA)</SelectItem>
+                                  <SelectItem value="employment">Employment Contract</SelectItem>
+                                  <SelectItem value="service">Service Agreement</SelectItem>
+                                  <SelectItem value="privacy">Privacy Policy</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                       
-                      <FormField name="jurisdiction">
-                        <FormItem>
-                          <FormLabel>Jurisdiction</FormLabel>
-                          <FormControl>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger className="w-full text-left border rounded-md px-4 py-2 bg-white dark:bg-gray-800">
-                                United States - California
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>United States - California</DropdownMenuItem>
-                                <DropdownMenuItem>United States - New York</DropdownMenuItem>
-                                <DropdownMenuItem>United Kingdom</DropdownMenuItem>
-                                <DropdownMenuItem>Canada</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </FormControl>
-                        </FormItem>
-                      </FormField>
-                    </div>
-                    
-                    <div className="mt-6">
-                      <Button className="w-full bg-legal-primary hover:bg-legal-primary/90 text-white">
-                        Continue to Questionnaire
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
+                      <FormField
+                        control={form.control}
+                        name="jurisdiction"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Jurisdiction</FormLabel>
+                            <FormControl>
+                              <Select 
+                                onValueChange={field.onChange} 
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select a jurisdiction" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="us-california">United States - California</SelectItem>
+                                  <SelectItem value="us-newyork">United States - New York</SelectItem>
+                                  <SelectItem value="uk">United Kingdom</SelectItem>
+                                  <SelectItem value="canada">Canada</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="mt-6">
+                        <Button type="submit" className="w-full bg-legal-primary hover:bg-legal-primary/90 text-white">
+                          Continue to Questionnaire
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </form>
                   </Form>
                   
                   <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
