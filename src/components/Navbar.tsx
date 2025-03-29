@@ -1,14 +1,47 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Shield, FileText, Menu, X } from "lucide-react";
+import { Shield, FileText, Menu, X, LogOut, User } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const authStatus = localStorage.getItem("isAuthenticated") === "true";
+    setIsAuthenticated(authStatus);
+    
+    // Get user name if authenticated
+    if (authStatus) {
+      const storedName = localStorage.getItem("userName");
+      setUserName(storedName ? storedName.split(" ")[0] : "User");
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  
+  const handleSignOut = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
+    
+    setIsAuthenticated(false);
+    
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+    });
+    
+    navigate("/");
+    setIsMenuOpen(false);
   };
 
   return (
@@ -51,17 +84,41 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="flex gap-3">
-            <Button 
-              variant="outline" 
-              className="border-legal-primary text-legal-primary hover:bg-legal-primary/10"
-            >
-              Sign In
-            </Button>
-            <Button 
-              className="bg-legal-primary hover:bg-legal-primary/90 text-white"
-            >
-              Get Started
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate("/dashboard")}
+                  className="border-legal-primary text-legal-primary hover:bg-legal-primary/10"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  {userName}'s Dashboard
+                </Button>
+                <Button 
+                  onClick={handleSignOut}
+                  className="bg-legal-primary hover:bg-legal-primary/90 text-white"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate("/sign-in")}
+                  className="border-legal-primary text-legal-primary hover:bg-legal-primary/10"
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  onClick={() => navigate("/sign-up")}
+                  className="bg-legal-primary hover:bg-legal-primary/90 text-white"
+                >
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -107,19 +164,50 @@ const Navbar: React.FC = () => {
               About
             </Link>
             <div className="flex flex-col gap-3 mt-2">
-              <Button 
-                variant="outline" 
-                className="border-legal-primary text-legal-primary hover:bg-legal-primary/10 w-full"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sign In
-              </Button>
-              <Button 
-                className="bg-legal-primary hover:bg-legal-primary/90 text-white w-full"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Get Started
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      navigate("/dashboard");
+                      setIsMenuOpen(false);
+                    }}
+                    className="border-legal-primary text-legal-primary hover:bg-legal-primary/10 w-full"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Button>
+                  <Button 
+                    onClick={handleSignOut}
+                    className="bg-legal-primary hover:bg-legal-primary/90 text-white w-full"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      navigate("/sign-in");
+                      setIsMenuOpen(false);
+                    }}
+                    className="border-legal-primary text-legal-primary hover:bg-legal-primary/10 w-full"
+                  >
+                    Sign In
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      navigate("/sign-up");
+                      setIsMenuOpen(false);
+                    }}
+                    className="bg-legal-primary hover:bg-legal-primary/90 text-white w-full"
+                  >
+                    Get Started
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

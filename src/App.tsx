@@ -10,6 +10,11 @@ import Pricing from "./pages/Pricing";
 import About from "./pages/About";
 import Generator from "./pages/Generator";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/Dashboard";
+import DocumentViewer from "./pages/DocumentViewer";
+import GeneratorPage from "./pages/GeneratorPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +30,11 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/about" element={<About />} />
           <Route path="/generator/:type" element={<Generator />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/document/:id" element={<DocumentViewer />} />
+          <Route path="/create/:type" element={<GeneratorPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
