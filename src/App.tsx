@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import DocumentViewer from "./pages/DocumentViewer";
 import GeneratorPage from "./pages/GeneratorPage";
+import AdminTemplates from "./pages/AdminTemplates";
 import AuthGuard from "./components/AuthGuard";
 import { AuthProvider } from "./hooks/useAuth";
 
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
             <Route path="/document/:id" element={<AuthGuard><DocumentViewer /></AuthGuard>} />
             <Route path="/create/:type" element={<AuthGuard><GeneratorPage /></AuthGuard>} />
+            <Route path="/admin/templates" element={<AuthGuard><AdminTemplates /></AuthGuard>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
