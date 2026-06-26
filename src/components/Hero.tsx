@@ -5,6 +5,46 @@ import { ArrowRight, FileText, CheckCircle } from "lucide-react";
 import TrustBadge from "./TrustBadge";
 
 const Hero: React.FC = () => {
+  const popularDocuments = [
+    {
+      title: "NDA Agreement",
+      description: "This Non-Disclosure Agreement is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Employment Contract",
+      description: "This Employment Contract is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Service Agreement",
+      description: "This Service Agreement is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Privacy Policy",
+      description: "This Privacy Policy is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Terms of Service",
+      description: "These Terms of Service are generated based on your inputs and customized for your specific jurisdiction."
+    }
+  ];
+
+  const [currentDocIndex, setCurrentDocIndex] = useState(0);
+  const [typingKey, setTypingKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDocIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % popularDocuments.length;
+        return nextIndex;
+      });
+      setTypingKey((prev) => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentDoc = popularDocuments[currentDocIndex];
+
   return (
     <section className="pt-12 md:pt-24 pb-16 md:pb-32 relative overflow-hidden">
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-blue-950"></div>
