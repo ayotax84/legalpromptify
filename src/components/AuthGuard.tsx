@@ -1,32 +1,28 @@
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-interface AuthGuardProps {
-  children: React.ReactNode;
-}
-
-const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
+const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
-    // Check if user is authenticated from localStorage
-    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
-    setIsAuthenticated(authStatus);
-    
-    if (!authStatus) {
-      navigate('/sign-in');
+    if (!loading && !user) {
+      navigate(`/sign-in?redirect=${encodeURIComponent(location.pathname)}`, { replace: true });
     }
-  }, [navigate]);
+  }, [user, loading, navigate, location.pathname]);
 
-  // Show nothing while checking auth status to prevent flashes
-  if (isAuthenticated === null) {
-    return null;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-legal-primary" />
+      </div>
+    );
   }
-
-  // If authenticated, render children
-  return isAuthenticated ? <>{children}</> : null;
+  if (!user) return null;
+  return <>{children}</>;
 };
 
 export default AuthGuard;

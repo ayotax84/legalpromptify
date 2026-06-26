@@ -1,45 +1,23 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Shield, FileText, Menu, X, LogOut, User } from "lucide-react";
+import { Shield, Menu, X, LogOut, User } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, signOut } = useAuth();
+  const isAuthenticated = !!user;
+  const userName = (user?.user_metadata?.full_name as string | undefined)?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "User";
 
-  useEffect(() => {
-    // Check if user is authenticated
-    const authStatus = localStorage.getItem("isAuthenticated") === "true";
-    setIsAuthenticated(authStatus);
-    
-    // Get user name if authenticated
-    if (authStatus) {
-      const storedName = localStorage.getItem("userName");
-      setUserName(storedName ? storedName.split(" ")[0] : "User");
-    }
-  }, []);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  
-  const handleSignOut = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
-    
-    setIsAuthenticated(false);
-    
-    toast({
-      title: "Signed out",
-      description: "You have been signed out successfully.",
-    });
-    
+  const handleSignOut = async () => {
+    await signOut();
+    toast({ title: "Signed out" });
     navigate("/");
     setIsMenuOpen(false);
   };
