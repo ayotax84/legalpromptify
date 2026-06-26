@@ -56,9 +56,30 @@ const SignIn = () => {
       toast({ title: "Google sign in failed", description: result.error.message, variant: "destructive" });
       return;
     }
+  const signInWithGoogle = async () => {
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      toast({ title: "Google sign in failed", description: result.error.message, variant: "destructive" });
+      return;
+    }
     if (result.redirected) return;
     navigate(redirectTo, { replace: true });
   };
+
+  const signInWithApple = async () => {
+    const result = await lovable.auth.signInWithOAuth("apple", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      toast({ title: "Apple sign in failed", description: result.error.message, variant: "destructive" });
+      return;
+    }
+    if (result.redirected) return;
+    navigate(redirectTo, { replace: true });
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col">
