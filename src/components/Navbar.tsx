@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Shield, Menu, X, LogOut, User } from "lucide-react";
+import { Shield, Menu, X, LogOut, User, ShieldCheck } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const isAuthenticated = !!user;
   const userName = (user?.user_metadata?.full_name as string | undefined)?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "User";
 
@@ -60,6 +62,14 @@ const Navbar: React.FC = () => {
             >
               About
             </Link>
+            {isAdmin && (
+              <Link 
+                to="/admin/templates" 
+                className="font-medium text-legal-accent hover:text-legal-primary transition-colors flex items-center gap-1"
+              >
+                <ShieldCheck className="h-4 w-4" /> Admin
+              </Link>
+            )}
           </div>
           <div className="flex gap-3">
             {isAuthenticated ? (

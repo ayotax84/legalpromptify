@@ -1,134 +1,69 @@
-
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
-import DocumentCard from "@/components/DocumentCard";
-import { 
-  FileText, 
-  Briefcase, 
-  Users, 
-  Home, 
-  ShieldCheck, 
-  GraduationCap, 
-  Share2, 
-  Pencil, 
-  ArrowRight,
-  Search,
-  Filter
-} from "lucide-react";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
-import { 
+import { Button } from "@/components/ui/button";
+import {
   Select,
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { FileText, Search, Filter, Loader2, ShieldCheck, ArrowRight } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface TemplateRow {
+  id: string;
+  slug: string;
+  name: string;
+  category: string | null;
+  description: string | null;
+  jurisdictions: string[] | null;
+  is_premium: boolean;
+}
 
 const Templates: React.FC = () => {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [categoryFilter, setCategoryFilter] = React.useState("all");
-  
-  const categories = [
-    { id: "all", label: "All Categories" },
-    { id: "business", label: "Business" },
-    { id: "employment", label: "Employment" },
-    { id: "property", label: "Property" },
-    { id: "ip", label: "Intellectual Property" },
-    { id: "personal", label: "Personal" }
-  ];
-  
-  const documents = [
-    {
-      title: "Non-Disclosure Agreement",
-      description: "Protect your confidential information when sharing with partners, employees, or clients.",
-      time: "5 min",
-      icon: <ShieldCheck size={24} />,
-      to: "/generator/nda",
-      isVerified: true,
-      category: "business"
-    },
-    {
-      title: "Employment Contract",
-      description: "Create a comprehensive employment agreement for your new hires.",
-      time: "10 min",
-      icon: <Briefcase size={24} />,
-      to: "/generator/employment",
-      isVerified: true,
-      category: "employment"
-    },
-    {
-      title: "Service Agreement",
-      description: "Define the terms for professional services between you and your clients.",
-      time: "8 min",
-      icon: <Pencil size={24} />,
-      to: "/generator/service",
-      isVerified: true,
-      category: "business"
-    },
-    {
-      title: "Rental Agreement",
-      description: "Establish clear terms for property rental between landlord and tenant.",
-      time: "12 min",
-      icon: <Home size={24} />,
-      to: "/generator/rental",
-      isVerified: false,
-      category: "property"
-    },
-    {
-      title: "Partnership Agreement",
-      description: "Define the terms of your business partnership and protect all parties.",
-      time: "15 min",
-      icon: <Users size={24} />,
-      to: "/generator/partnership",
-      isVerified: false,
-      category: "business"
-    },
-    {
-      title: "Software License",
-      description: "Specify how your software can be used, distributed, and modified.",
-      time: "7 min",
-      icon: <Share2 size={24} />,
-      to: "/generator/software-license",
-      isVerified: true,
-      category: "ip"
-    },
-    {
-      title: "Last Will and Testament",
-      description: "Create a legally binding document to express your final wishes.",
-      time: "20 min",
-      icon: <FileText size={24} />,
-      to: "/generator/will",
-      isVerified: true,
-      category: "personal"
-    },
-    {
-      title: "Privacy Policy",
-      description: "Generate a compliant privacy policy for your website or application.",
-      time: "8 min",
-      icon: <ShieldCheck size={24} />,
-      to: "/generator/privacy-policy",
-      isVerified: true,
-      category: "ip"
-    },
-    {
-      title: "Terms of Service",
-      description: "Create a comprehensive terms of service agreement for your platform.",
-      time: "10 min",
-      icon: <FileText size={24} />,
-      to: "/generator/terms",
-      isVerified: true,
-      category: "ip"
-    }
-  ];
+  const [templates, setTemplates] = useState<TemplateRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+  const [jurisdiction, setJurisdiction] = useState("all");
 
-  const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          doc.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || doc.category === categoryFilter;
-    
-    return matchesSearch && matchesCategory;
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase
+        .from("templates")
+        .select("id, slug, name, category, description, jurisdictions, is_premium")
+        .eq("is_active", true)
+        .order("category", { ascending: true })
+        .order("name", { ascending: true });
+      if (!error && data) setTemplates(data as TemplateRow[]);
+      setLoading(false);
+    })();
+  }, []);
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    templates.forEach((t) => t.category && set.add(t.category));
+    return ["all", ...Array.from(set).sort()];
+  }, [templates]);
+
+  const jurisdictions = ["all", "US", "UK", "EU"];
+
+  const filtered = templates.filter((t) => {
+    const q = search.toLowerCase();
+    const matchSearch =
+      !q ||
+      t.name.toLowerCase().includes(q) ||
+      (t.description ?? "").toLowerCase().includes(q);
+    const matchCat = category === "all" || t.category === category;
+    const matchJur =
+      jurisdiction === "all" || (t.jurisdictions ?? []).includes(jurisdiction);
+    return matchSearch && matchCat && matchJur;
   });
 
   return (
@@ -142,8 +77,8 @@ const Templates: React.FC = () => {
                 Legal Document Templates
               </h1>
               <p className="text-legal-secondary dark:text-legal-light/70">
-                Browse our library of professionally crafted legal templates, 
-                designed to protect your interests and ensure compliance.
+                Browse our library of professionally crafted, jurisdiction-aware
+                legal templates.
               </p>
             </div>
 
@@ -153,25 +88,36 @@ const Templates: React.FC = () => {
                   <Input
                     type="text"
                     placeholder="Search templates..."
-                    className="pl-10 legal-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-legal-secondary/70" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-legal-secondary/70" />
                 </div>
-                <div className="w-full md:w-48">
-                  <Select 
-                    value={categoryFilter}
-                    onValueChange={setCategoryFilter}
-                  >
-                    <SelectTrigger className="legal-input">
+                <div className="w-full md:w-56">
+                  <Select value={category} onValueChange={setCategory}>
+                    <SelectTrigger>
                       <Filter className="h-4 w-4 mr-2" />
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.label}
+                      {categories.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c === "all" ? "All Categories" : c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="w-full md:w-40">
+                  <Select value={jurisdiction} onValueChange={setJurisdiction}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Jurisdiction" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jurisdictions.map((j) => (
+                        <SelectItem key={j} value={j}>
+                          {j === "all" ? "All Jurisdictions" : j}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -180,7 +126,11 @@ const Templates: React.FC = () => {
               </div>
             </div>
 
-            {filteredDocuments.length === 0 ? (
+            {loading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-legal-primary" />
+              </div>
+            ) : filtered.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="mx-auto h-12 w-12 text-legal-secondary/50 mb-4" />
                 <h3 className="text-xl font-medium mb-2">No templates found</h3>
@@ -190,16 +140,44 @@ const Templates: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                {filteredDocuments.map((doc, index) => (
-                  <DocumentCard
-                    key={index}
-                    title={doc.title}
-                    description={doc.description}
-                    time={doc.time}
-                    icon={doc.icon}
-                    to={doc.to}
-                    isVerified={doc.isVerified}
-                  />
+                {filtered.map((t) => (
+                  <Link key={t.id} to={`/create/${t.slug}`} className="block group">
+                    <Card className="h-full hover:shadow-lg transition-all border-legal-light hover:border-legal-primary/40">
+                      <CardContent className="pt-6">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="h-10 w-10 rounded-lg bg-legal-primary/10 flex items-center justify-center text-legal-primary">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div className="flex gap-1">
+                            {t.is_premium && (
+                              <Badge className="bg-legal-accent text-white">Premium</Badge>
+                            )}
+                            <Badge variant="outline" className="text-xs">
+                              <ShieldCheck className="h-3 w-3 mr-1" /> Verified
+                            </Badge>
+                          </div>
+                        </div>
+                        <h3 className="font-serif text-xl font-semibold text-legal-primary mb-2 group-hover:underline">
+                          {t.name}
+                        </h3>
+                        <p className="text-sm text-legal-secondary mb-4 line-clamp-3">
+                          {t.description}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-legal-secondary">
+                          <div className="flex gap-1">
+                            {(t.jurisdictions ?? []).map((j) => (
+                              <Badge key={j} variant="secondary" className="text-[10px]">
+                                {j}
+                              </Badge>
+                            ))}
+                          </div>
+                          <span className="flex items-center gap-1 text-legal-primary font-medium">
+                            Generate <ArrowRight className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             )}

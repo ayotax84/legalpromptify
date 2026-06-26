@@ -11,11 +11,13 @@ import { z } from "npm:zod@3.23.8";
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ?? Deno.env.get("SUPABASE_ANON_KEY")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 const BodySchema = z.object({
   documentType: z.string().min(1).max(80),
   title: z.string().min(1).max(200),
   jurisdiction: z.string().min(1).max(80),
+  templateSlug: z.string().min(1).max(80).optional(),
   formData: z.record(z.unknown()),
   additionalInstructions: z.string().max(2000).optional(),
 });
@@ -106,11 +108,34 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
-    const { documentType, title, jurisdiction, formData, additionalInstructions } = parsed.data;
+    const { documentType, title, jurisdiction, templateSlug, formData, additionalInstructions } = parsed.data;
+
+    // Load template-specific guidance (prompt_template + required_clauses) using
+    // service role because those columns are restricted from end users.
+    let templatePrompt = "";
+    let requiredClauses: string[] = [];
+    if (templateSlug) {
+      const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const { data: tmpl } = await admin
+        .from("templates")
+        .select("prompt_template, required_clauses")
+        .eq("slug", templateSlug)
+        .eq("is_active", true)
+        .maybeSingle();
+      if (tmpl) {
+        templatePrompt = (tmpl.prompt_template as string) ?? "";
+        requiredClauses = (tmpl.required_clauses as string[]) ?? [];
+      }
+    }
+
+    const clausesBlock = requiredClauses.length
+      ? `\nRequired clauses (include each one as a numbered section):\n- ${requiredClauses.join("\n- ")}\n`
+      : "";
 
     // Pass 1: draft
     const draftUserPrompt = `Draft a ${documentType} titled "${title}" governed by ${jurisdiction} law.
 
+${templatePrompt ? `Template guidance:\n${templatePrompt}\n` : ""}${clausesBlock}
 Party and clause data (JSON):
 ${JSON.stringify(formData, null, 2)}
 
