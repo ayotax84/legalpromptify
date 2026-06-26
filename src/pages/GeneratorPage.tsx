@@ -263,12 +263,22 @@ const GeneratorPage = () => {
                       </p>
                     </div>
                     
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto relative">
+                      {generating && (
+                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 dark:bg-legal-dark/80 rounded-lg backdrop-blur-sm">
+                          <div className="flex flex-col items-center gap-3 text-legal-primary">
+                            <Loader2 className="h-10 w-10 animate-spin" />
+                            <p className="font-medium">AI is drafting your document…</p>
+                            <p className="text-sm text-legal-secondary">Running verification pass for legal completeness.</p>
+                          </div>
+                        </div>
+                      )}
                       <DocumentForm 
                         documentType={template.type} 
                         onComplete={handleFormComplete} 
                       />
                     </div>
+
                   </>
                 ) : (
                   <div className="max-w-4xl mx-auto">
