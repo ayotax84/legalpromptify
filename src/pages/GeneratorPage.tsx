@@ -142,7 +142,7 @@ const GeneratorPage = () => {
         template_slug: template.slug,
         status: "ready",
         jurisdiction: (formData?.jurisdiction as string) ?? "US",
-        form_data: formData ?? {},
+        form_data: (formData ?? {}) as never,
         content_html: generatedHtml,
       })
       .select("id")

@@ -144,24 +144,14 @@ const AdminTemplatesInner: React.FC = () => {
           : editing.required_clauses,
     };
 
-    const { data, error } = await supabase.functions.invoke("admin-templates", {
-      method: "POST",
-      body: payload,
-      headers: {},
-    });
-
-    // Use query param for action
-    const { data: data2, error: err2 } = error
-      ? { data: null, error }
-      : await supabase.functions.invoke(
-          `admin-templates?action=${isUpdate ? "update" : "create"}`,
-          { body: payload },
-        );
+    const { error } = await supabase.functions.invoke(
+      `admin-templates?action=${isUpdate ? "update" : "create"}`,
+      { body: payload },
+    );
 
     setSaving(false);
-    const finalErr = err2 ?? error;
-    if (finalErr) {
-      toast({ title: "Save failed", description: finalErr.message, variant: "destructive" });
+    if (error) {
+      toast({ title: "Save failed", description: error.message, variant: "destructive" });
       return;
     }
     toast({ title: "Saved" });
