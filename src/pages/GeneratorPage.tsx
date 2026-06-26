@@ -6,9 +6,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthGuard from "@/components/AuthGuard";
 import DocumentForm from "@/components/DocumentForm";
-import { FileText, ArrowLeft, CheckCircle, PenSquare, Download, Printer, CopyPlus } from "lucide-react";
+import { FileText, ArrowLeft, CheckCircle, PenSquare, Download, Printer, CopyPlus, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Template {
   id: string;
@@ -22,10 +24,14 @@ const GeneratorPage = () => {
   const { type } = useParams<{ type: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [template, setTemplate] = useState<Template | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [documentGenerated, setDocumentGenerated] = useState(false);
   const [generatedHtml, setGeneratedHtml] = useState("");
+  const [formData, setFormData] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  
   
   useEffect(() => {
     // Fetch template information based on the type parameter
@@ -302,35 +308,57 @@ const GeneratorPage = () => {
     }
     
     setGeneratedHtml(documentHtml);
+    setFormData(data);
     setDocumentGenerated(true);
-    
+
     toast({
       title: "Document generated",
       description: "Your legal document has been successfully generated.",
     });
   };
-  
+
   const handlePrint = () => {
     window.print();
   };
-  
+
   const handleDownload = () => {
-    // In a real app, this would generate a PDF
-    toast({
-      title: "Download started",
-      description: "Your document is being downloaded.",
-    });
+    const blob = new Blob(
+      [`<!doctype html><html><head><meta charset="utf-8"><title>${template?.title ?? "Document"}</title></head><body>${generatedHtml}</body></html>`],
+      { type: "text/html" }
+    );
+    const url = URL.createObjectURL(blob);
+    const a = window.document.createElement("a");
+    a.href = url;
+    a.download = `${(template?.title ?? "document").replace(/\s+/g, "-").toLowerCase()}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
-  
-  const handleSave = () => {
-    // In a real app, this would save the document to the user's account
-    toast({
-      title: "Document saved",
-      description: "Your document has been saved to your account.",
-    });
-    
-    // Navigate to dashboard
-    navigate("/dashboard");
+
+  const handleSave = async () => {
+    if (!user || !template) return;
+    setSaving(true);
+    const { data, error } = await supabase
+      .from("documents")
+      .insert({
+        user_id: user.id,
+        title: template.title,
+        template_slug: template.type,
+        status: "ready",
+        jurisdiction: formData?.agreement?.jurisdiction ?? "US",
+        form_data: formData ?? {},
+        content_html: generatedHtml,
+      })
+      .select("id")
+      .single();
+    setSaving(false);
+
+    if (error || !data) {
+      toast({ title: "Save failed", description: error?.message ?? "Unknown error", variant: "destructive" });
+      return;
+    }
+
+    toast({ title: "Document saved", description: "Your document is now in your dashboard." });
+    navigate(`/document/${data.id}`);
   };
   
   const handleCreateNew = () => {
@@ -422,11 +450,13 @@ const GeneratorPage = () => {
                         >
                           <CopyPlus className="mr-2 h-4 w-4" /> Create New
                         </Button>
-                        <Button 
+                        <Button
                           onClick={handleSave}
+                          disabled={saving}
                           className="bg-legal-primary hover:bg-legal-primary/90 text-white"
                         >
-                          <PenSquare className="mr-2 h-4 w-4" /> Save
+                          {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <PenSquare className="mr-2 h-4 w-4" />}
+                          {saving ? "Saving..." : "Save"}
                         </Button>
                       </div>
                     </div>
