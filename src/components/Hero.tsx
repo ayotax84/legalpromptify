@@ -1,10 +1,50 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, CheckCircle } from "lucide-react";
 import TrustBadge from "./TrustBadge";
 
 const Hero: React.FC = () => {
+  const popularDocuments = [
+    {
+      title: "NDA Agreement",
+      description: "This Non-Disclosure Agreement is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Employment Contract",
+      description: "This Employment Contract is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Service Agreement",
+      description: "This Service Agreement is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Privacy Policy",
+      description: "This Privacy Policy is generated based on your inputs and customized for your specific jurisdiction."
+    },
+    {
+      title: "Terms of Service",
+      description: "These Terms of Service are generated based on your inputs and customized for your specific jurisdiction."
+    }
+  ];
+
+  const [currentDocIndex, setCurrentDocIndex] = useState(0);
+  const [typingKey, setTypingKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDocIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % popularDocuments.length;
+        return nextIndex;
+      });
+      setTypingKey((prev) => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentDoc = popularDocuments[currentDocIndex];
+
   return (
     <section className="pt-12 md:pt-24 pb-16 md:pb-32 relative overflow-hidden">
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-blue-950"></div>
@@ -57,18 +97,18 @@ const Hero: React.FC = () => {
           <div className="lg:w-1/2 flex justify-center lg:justify-end animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <div className="relative">
               <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-legal-primary to-legal-accent/70 opacity-75 blur-sm animate-pulse"></div>
-              <div className="relative legal-card bg-white dark:bg-legal-dark p-6 w-full max-w-lg">
+              <div className="relative legal-card bg-white dark:bg-legal-dark p-6 w-full max-w-lg transition-all duration-500">
                 <div className="flex items-center gap-3 mb-4">
                   <FileText className="text-legal-primary dark:text-legal-accent h-6 w-6" />
-                  <h3 className="font-serif font-medium text-xl">NDA Agreement</h3>
+                  <h3 className="font-serif font-medium text-xl">{currentDoc.title}</h3>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-legal-secondary dark:text-legal-light/70 text-sm">
-                    This Non-Disclosure Agreement is generated based on your inputs and customized for your specific jurisdiction.
+                  <p className="text-legal-secondary dark:text-legal-light/70 text-sm min-h-[40px]">
+                    {currentDoc.description}
                   </p>
                   <div className="legal-input py-3 relative overflow-hidden">
-                    <div className="animate-typing whitespace-nowrap overflow-hidden text-legal-secondary dark:text-legal-light/70 border-r-2 border-legal-primary pr-1">
-                      Generating your customized NDA agreement...
+                    <div key={typingKey} className="animate-typing whitespace-nowrap overflow-hidden text-legal-secondary dark:text-legal-light/70 border-r-2 border-legal-primary pr-1">
+                      Generating your customized {currentDoc.title.toLowerCase()}...
                     </div>
                   </div>
                   <div className="space-y-3">
