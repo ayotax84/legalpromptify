@@ -45,7 +45,7 @@ const Dashboard = () => {
           .select("id, title, template_slug, status, created_at")
           .order("created_at", { ascending: false })
           .limit(10),
-        supabase.from("templates").select("*").eq("is_active", true).limit(4),
+        supabase.from("templates").select("id, slug, name, category, description, jurisdictions, field_schema, required_clauses, is_premium, is_active, created_at, updated_at").eq("is_active", true).limit(4),
       ]);
       if (docErr) toast({ title: "Could not load documents", description: docErr.message, variant: "destructive" });
       setDocs((docRows as DocRow[]) ?? []);
