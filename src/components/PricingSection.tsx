@@ -119,12 +119,13 @@ const PricingSection: React.FC = () => {
                 ))}
               </ul>
               <Button 
+                asChild
                 className={`w-full py-6 ${plan.highlighted 
                   ? "bg-legal-primary hover:bg-legal-primary/90 text-white" 
                   : "bg-white text-legal-primary border border-legal-primary hover:bg-legal-primary/10 dark:bg-transparent dark:text-legal-light dark:border-legal-light/30"
                 }`}
               >
-                {plan.buttonText}
+                <Link to={plan.buttonTo}>{plan.buttonText}</Link>
               </Button>
             </div>
           ))}
