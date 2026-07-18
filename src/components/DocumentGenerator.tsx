@@ -114,7 +114,10 @@ const DocumentGenerator: React.FC = () => {
                   </div>
                   
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit((data) => {
+                      const path = data.documentType === "privacy" ? "/generator/privacy-policy" : `/generator/${data.documentType}`;
+                      window.location.href = path;
+                    })} className="space-y-4">
                       <FormField
                         control={form.control}
                         name="documentType"
@@ -179,7 +182,7 @@ const DocumentGenerator: React.FC = () => {
                   <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
                     <div className="flex items-center justify-between">
                       <div className="text-xs text-legal-secondary dark:text-legal-light/50">
-                        Estimated completion time: <span className="font-medium">5 minutes</span>
+                        <span className="font-medium">Instant generation</span> — no waiting
                       </div>
                       <TrustBadge type="verified" />
                     </div>
