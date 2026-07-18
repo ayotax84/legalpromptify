@@ -22,6 +22,7 @@ const PricingSection: React.FC = () => {
         { name: "API Access", included: false }
       ],
       buttonText: "Get Started",
+      buttonTo: "/sign-up",
       highlighted: false
     },
     {
