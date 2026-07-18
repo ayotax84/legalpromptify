@@ -114,10 +114,7 @@ const DocumentGenerator: React.FC = () => {
                   </div>
                   
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit((data) => {
-                      const path = data.documentType === "privacy" ? "/generator/privacy-policy" : `/generator/${data.documentType}`;
-                      window.location.href = path;
-                    })} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                       <FormField
                         control={form.control}
                         name="documentType"
