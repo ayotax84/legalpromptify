@@ -26,7 +26,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const DocumentGenerator: React.FC = () => {
-  // Initialize the form with react-hook-form
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,8 +36,8 @@ const DocumentGenerator: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    // Handle form submission logic here
+    const path = data.documentType === "privacy" ? "/generator/privacy-policy" : `/generator/${data.documentType}`;
+    navigate(path);
   };
 
   return (
