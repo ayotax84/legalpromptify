@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, ArrowRight } from "lucide-react";
@@ -26,7 +26,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const DocumentGenerator: React.FC = () => {
-  // Initialize the form with react-hook-form
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,8 +36,8 @@ const DocumentGenerator: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    // Handle form submission logic here
+    const path = data.documentType === "privacy" ? "/generator/privacy-policy" : `/generator/${data.documentType}`;
+    navigate(path);
   };
 
   return (
@@ -179,7 +179,7 @@ const DocumentGenerator: React.FC = () => {
                   <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
                     <div className="flex items-center justify-between">
                       <div className="text-xs text-legal-secondary dark:text-legal-light/50">
-                        Estimated completion time: <span className="font-medium">5 minutes</span>
+                        <span className="font-medium">Instant generation</span> — no waiting
                       </div>
                       <TrustBadge type="verified" />
                     </div>

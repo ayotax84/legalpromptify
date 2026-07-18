@@ -48,12 +48,21 @@ const Hero: React.FC = () => {
 
   return (
     <section className="pt-12 md:pt-24 pb-16 md:pb-32 relative overflow-hidden">
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-blue-950"></div>
-      <div className="absolute right-0 top-0 w-2/3 h-full z-0 opacity-20 dark:opacity-10">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#2c5282" d="M47.5,-51.2C59.1,-34.8,64.8,-17.4,67.1,2.3C69.5,22,68.5,44,56.8,58.3C45.2,72.7,22.6,79.3,1.2,78C-20.3,76.8,-40.6,67.6,-53.5,53.2C-66.4,38.8,-72,19.4,-71.3,0.7C-70.6,-18,-63.7,-36,-51.3,-52.4C-38.8,-68.7,-19.4,-83.4,-0.6,-82.7C18.1,-82,36.2,-65.9,47.5,-51.2Z" transform="translate(100 100)" />
-        </svg>
-      </div>
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/40 dark:from-gray-900 dark:via-legal-dark dark:to-blue-950/40"></div>
+      <div
+        className="absolute inset-0 z-0 opacity-[0.35] dark:opacity-[0.08]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, hsl(217 33% 17% / 0.08) 1px, transparent 1px), linear-gradient(to bottom, hsl(217 33% 17% / 0.08) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+          maskImage:
+            "radial-gradient(ellipse at top right, black 30%, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at top right, black 30%, transparent 75%)",
+        }}
+      ></div>
+      <div className="absolute -top-24 -right-24 w-[480px] h-[480px] rounded-full bg-legal-primary/10 dark:bg-legal-primary/20 blur-3xl z-0"></div>
+      <div className="absolute -bottom-32 -left-32 w-[420px] h-[420px] rounded-full bg-legal-accent/10 dark:bg-legal-accent/10 blur-3xl z-0"></div>
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 text-center lg:text-left mb-12 lg:mb-0">
