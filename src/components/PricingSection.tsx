@@ -62,6 +62,7 @@ const PricingSection: React.FC = () => {
         { name: "Full API Access", included: true }
       ],
       buttonText: "Contact Sales",
+      buttonTo: "/about",
       highlighted: false
     }
   ];
