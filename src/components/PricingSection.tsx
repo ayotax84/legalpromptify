@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Shield, FileText, Users, Database } from "lucide-react";
 
@@ -21,6 +22,7 @@ const PricingSection: React.FC = () => {
         { name: "API Access", included: false }
       ],
       buttonText: "Get Started",
+      buttonTo: "/sign-up",
       highlighted: false
     },
     {
@@ -40,6 +42,7 @@ const PricingSection: React.FC = () => {
         { name: "API Access", included: false }
       ],
       buttonText: "Subscribe Now",
+      buttonTo: "/pricing",
       highlighted: true
     },
     {
@@ -59,6 +62,7 @@ const PricingSection: React.FC = () => {
         { name: "Full API Access", included: true }
       ],
       buttonText: "Contact Sales",
+      buttonTo: "/about",
       highlighted: false
     }
   ];
@@ -115,12 +119,13 @@ const PricingSection: React.FC = () => {
                 ))}
               </ul>
               <Button 
+                asChild
                 className={`w-full py-6 ${plan.highlighted 
                   ? "bg-legal-primary hover:bg-legal-primary/90 text-white" 
                   : "bg-white text-legal-primary border border-legal-primary hover:bg-legal-primary/10 dark:bg-transparent dark:text-legal-light dark:border-legal-light/30"
                 }`}
               >
-                {plan.buttonText}
+                <Link to={plan.buttonTo}>{plan.buttonText}</Link>
               </Button>
             </div>
           ))}

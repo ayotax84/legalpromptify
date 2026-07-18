@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, ArrowRight } from "lucide-react";
@@ -93,9 +94,11 @@ const DocumentGenerator: React.FC = () => {
                 </div>
               </div>
               
-              <Button className="mt-8 bg-legal-primary hover:bg-legal-primary/90 text-white">
-                Start Creating
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button asChild className="mt-8 bg-legal-primary hover:bg-legal-primary/90 text-white">
+                <Link to="/templates">
+                  Start Creating
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
             

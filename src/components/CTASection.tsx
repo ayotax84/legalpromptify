@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -22,12 +23,14 @@ const CTASection: React.FC = () => {
                 Join thousands of businesses and individuals who save time and money with our AI-powered legal document generator.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-legal-primary hover:bg-legal-primary/90 text-white">
-                  Get Started for Free
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button asChild className="bg-legal-primary hover:bg-legal-primary/90 text-white">
+                  <Link to="/sign-up">
+                    Get Started for Free
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
-                <Button variant="outline" className="border-legal-primary text-legal-primary hover:bg-legal-primary/10">
-                  Schedule a Demo
+                <Button asChild variant="outline" className="border-legal-primary text-legal-primary hover:bg-legal-primary/10">
+                  <Link to="/about">Schedule a Demo</Link>
                 </Button>
               </div>
             </div>

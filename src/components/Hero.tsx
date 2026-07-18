@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, CheckCircle } from "lucide-react";
 import TrustBadge from "./TrustBadge";
@@ -67,12 +68,14 @@ const Hero: React.FC = () => {
               Create customized, legally sound documents in minutes. Our AI generates contracts and agreements tailored to your specific needs and jurisdiction.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              <Button className="bg-legal-primary hover:bg-legal-primary/90 text-white px-8 py-6 text-lg">
-                Create Document
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button asChild className="bg-legal-primary hover:bg-legal-primary/90 text-white px-8 py-6 text-lg">
+                <Link to="/templates">
+                  Create Document
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-              <Button variant="outline" className="border-legal-primary text-legal-primary hover:bg-legal-primary/10 px-8 py-6 text-lg">
-                Browse Templates
+              <Button asChild variant="outline" className="border-legal-primary text-legal-primary hover:bg-legal-primary/10 px-8 py-6 text-lg">
+                <Link to="/templates">Browse Templates</Link>
               </Button>
             </div>
             <div className="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.6s" }}>
@@ -98,23 +101,25 @@ const Hero: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-legal-primary to-legal-accent/70 opacity-75 blur-sm animate-pulse"></div>
               <div className="relative legal-card bg-white dark:bg-legal-dark p-6 w-full max-w-lg transition-all duration-500">
-                <div className="flex items-center gap-3 mb-4">
-                  <FileText className="text-legal-primary dark:text-legal-accent h-6 w-6" />
-                  <h3 className="font-serif font-medium text-xl">{currentDoc.title}</h3>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-legal-secondary dark:text-legal-light/70 text-sm min-h-[40px]">
-                    {currentDoc.description}
-                  </p>
-                  <div className="legal-input py-3 relative overflow-hidden">
-                    <div key={typingKey} className="animate-typing whitespace-nowrap overflow-hidden text-legal-secondary dark:text-legal-light/70 border-r-2 border-legal-primary pr-1">
-                      Generating your customized {currentDoc.title.toLowerCase()}...
-                    </div>
+                <div key={currentDocIndex} className="animate-fade-in">
+                  <div className="flex items-center gap-3 mb-4">
+                    <FileText className="text-legal-primary dark:text-legal-accent h-6 w-6" />
+                    <h3 className="font-serif font-medium text-xl">{currentDoc.title}</h3>
                   </div>
-                  <div className="space-y-3">
-                    <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-full"></div>
-                    <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-5/6"></div>
-                    <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-4/6"></div>
+                  <div className="space-y-4">
+                    <p className="text-legal-secondary dark:text-legal-light/70 text-sm min-h-[40px]">
+                      {currentDoc.description}
+                    </p>
+                    <div className="legal-input py-3 relative overflow-hidden">
+                      <div key={typingKey} className="animate-typing whitespace-nowrap overflow-hidden text-legal-secondary dark:text-legal-light/70 border-r-2 border-legal-primary pr-1">
+                        Generating your customized {currentDoc.title.toLowerCase()}...
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-full"></div>
+                      <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-5/6"></div>
+                      <div className="h-2 bg-legal-light/50 dark:bg-legal-secondary/20 rounded-full w-4/6"></div>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-6 flex justify-between items-center">
