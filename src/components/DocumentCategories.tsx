@@ -95,11 +95,14 @@ const DocumentCategories: React.FC = () => {
 
         <div className="text-center">
           <Button 
+            asChild
             variant="outline" 
             className="border-legal-primary text-legal-primary hover:bg-legal-primary/10"
           >
-            View All Templates
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to="/templates">
+              View All Templates
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>
