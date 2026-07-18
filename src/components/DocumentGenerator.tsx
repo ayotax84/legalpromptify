@@ -93,9 +93,11 @@ const DocumentGenerator: React.FC = () => {
                 </div>
               </div>
               
-              <Button className="mt-8 bg-legal-primary hover:bg-legal-primary/90 text-white">
-                Start Creating
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button asChild className="mt-8 bg-legal-primary hover:bg-legal-primary/90 text-white">
+                <Link to="/templates">
+                  Start Creating
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
             
