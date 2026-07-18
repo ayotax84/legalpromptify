@@ -42,6 +42,7 @@ const PricingSection: React.FC = () => {
         { name: "API Access", included: false }
       ],
       buttonText: "Subscribe Now",
+      buttonTo: "/pricing",
       highlighted: true
     },
     {
