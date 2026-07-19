@@ -39,10 +39,10 @@ const About: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
-                Our Mission
+                About LegalPromptify
               </h1>
               <p className="text-legal-secondary dark:text-legal-light/70 text-lg mb-8">
-                We're making legal protection accessible to everyone through technology.
+                A test-level concept exploring how AI can make legal document creation faster and more accessible.
               </p>
               <div className="flex justify-center">
                 <Shield className="h-24 w-24 text-legal-primary/30 dark:text-legal-primary/20" />
@@ -56,30 +56,24 @@ const About: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-serif text-3xl font-semibold mb-6 text-center">
-                Our Story
+                The Idea Behind It
               </h2>
               <div className="prose prose-lg max-w-none dark:prose-invert">
                 <p>
-                  LegalPromptify was founded in 2021 with a simple but powerful idea: 
-                  legal services should be affordable, accessible, and easy to understand for everyone. 
-                  Our founders, Sarah Johnson and Michael Chen, came from different worlds—law and technology—but 
-                  shared a frustration with the traditional legal system.
+                  LegalPromptify is a test-level idea built to explore how AI can help people generate 
+                  legal documents without expensive consultations or complex legal software. It is not a 
+                  fully launched law firm, legal service, or substitute for professional legal advice.
                 </p>
                 <p>
-                  Sarah, a corporate attorney with over 15 years of experience, had seen countless clients 
-                  struggle with expensive legal fees for relatively straightforward documents. Michael, a 
-                  software engineer specializing in AI, believed that technology could transform the legal industry.
+                  The project is being developed by Taha Benbrahim, who is behind the concept, design, 
+                  and technical direction. The goal is to experiment with AI-powered contract generation, 
+                  jurisdiction-aware templates, and a clean user experience that makes legal paperwork 
+                  feel less intimidating.
                 </p>
                 <p>
-                  Together, they created LegalPromptify to bridge the gap between expensive legal services and 
-                  risky DIY solutions. By combining AI technology with legal expertise, we've developed a platform 
-                  that generates high-quality legal documents tailored to your specific needs, at a fraction of the cost.
-                </p>
-                <p>
-                  Today, LegalPromptify serves thousands of businesses and individuals across the globe, 
-                  helping them protect their interests with properly drafted legal documents. Our team has 
-                  grown to include legal experts across various specialties, ensuring our templates are accurate 
-                  and up-to-date with current laws.
+                  While the platform generates structured documents and guides users through common legal 
+                  scenarios, it remains an experimental product. Any document produced should be reviewed by 
+                  a qualified attorney before it is used in a real legal or business situation.
                 </p>
               </div>
             </div>
