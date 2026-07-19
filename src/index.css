@@ -115,4 +115,13 @@
   .trust-badge-verified {
     @apply trust-badge bg-green-50 text-green-700 border border-green-200;
   }
+
+  .about-hero-grid {
+    background-image: radial-gradient(rgba(74, 85, 104, 0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .about-hero-glow {
+    background: radial-gradient(ellipse at center, rgba(44, 82, 130, 0.22) 0%, transparent 70%);
+  }
 }

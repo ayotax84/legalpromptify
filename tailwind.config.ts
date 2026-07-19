@@ -70,6 +70,7 @@ export default {
 					accent: '#d69e2e', // Gold
 					light: '#e2e8f0', // Light gray
 					dark: '#1a202c', // Dark blue-gray
+					ink: '#0a0c10', // Near-black studio background
 				}
 			},
 			fontFamily: {
