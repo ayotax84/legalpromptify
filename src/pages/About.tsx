@@ -118,9 +118,11 @@ const About: React.FC = () => {
               <p className="text-legal-secondary dark:text-legal-light/70 mb-8">
                 Experience the future of legal document creation today.
               </p>
-              <Button className="bg-legal-primary hover:bg-legal-primary/90 text-white">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button className="bg-legal-primary hover:bg-legal-primary/90 text-white" asChild>
+                <Link to="/templates">
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </div>
