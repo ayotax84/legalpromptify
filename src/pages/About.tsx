@@ -108,46 +108,6 @@ const About: React.FC = () => {
           </div>
         </section>
 
-        {/* Awards Section */}
-        <section className="py-16 bg-legal-light/30 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="font-serif text-3xl font-semibold mb-4">
-                Recognition & Awards
-              </h2>
-              <p className="text-legal-secondary dark:text-legal-light/70">
-                Our commitment to excellence has been recognized
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white dark:bg-legal-dark p-6 rounded-lg text-center">
-                <Award className="h-12 w-12 text-legal-accent mx-auto mb-4" />
-                <h3 className="font-medium mb-2">Legal Tech Innovator 2023</h3>
-                <p className="text-legal-secondary dark:text-legal-light/70 text-sm">
-                  Awarded by the American Bar Association
-                </p>
-              </div>
-              
-              <div className="bg-white dark:bg-legal-dark p-6 rounded-lg text-center">
-                <Award className="h-12 w-12 text-legal-accent mx-auto mb-4" />
-                <h3 className="font-medium mb-2">Best Legal Document Service</h3>
-                <p className="text-legal-secondary dark:text-legal-light/70 text-sm">
-                  Consumer Choice Awards 2022
-                </p>
-              </div>
-              
-              <div className="bg-white dark:bg-legal-dark p-6 rounded-lg text-center">
-                <Award className="h-12 w-12 text-legal-accent mx-auto mb-4" />
-                <h3 className="font-medium mb-2">Top 10 Legal Tech Startups</h3>
-                <p className="text-legal-secondary dark:text-legal-light/70 text-sm">
-                  Legal Business Magazine 2022
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
         <section className="py-16 bg-white dark:bg-legal-dark">
           <div className="container mx-auto px-4">
