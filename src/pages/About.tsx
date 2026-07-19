@@ -6,26 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Scale, Users, BookOpen, ArrowRight, Award, Heart, Lightbulb } from "lucide-react";
 
 const About: React.FC = () => {
-  const teamMembers = [
-    {
-      name: "Sarah Johnson",
-      role: "CEO & Co-Founder",
-      bio: "Former corporate attorney with 15+ years of experience at top law firms. Sarah founded LegalPromptify to democratize legal services.",
-      image: "https://randomuser.me/api/portraits/women/23.jpg"
-    },
-    {
-      name: "Michael Chen",
-      role: "CTO & Co-Founder",
-      bio: "Tech innovator with background in AI and document automation. Michael leads our technology team in developing our AI legal engine.",
-      image: "https://randomuser.me/api/portraits/men/45.jpg"
-    },
-    {
-      name: "Elena Rodriguez",
-      role: "Legal Content Director",
-      bio: "Specialized in contract law with a focus on international business. Elena ensures all templates meet the highest legal standards.",
-      image: "https://randomuser.me/api/portraits/women/65.jpg"
-    }
-  ];
 
   const values = [
     {
